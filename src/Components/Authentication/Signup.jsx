@@ -65,6 +65,7 @@ const Signup = () => {
       return setError("Please enter a valid phone number!");
     try {
       const response = await setUpRecaptha(number);
+      console.log(response);
       setResult(response);
       setFlag(true);
     } catch (err) {

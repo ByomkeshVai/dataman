@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { toast } from "react-hot-toast";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const VerifyModal = ({ setIsEditModalOpen, isOpen, verifyOtp, setOtp }) => {
   return (

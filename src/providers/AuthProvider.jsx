@@ -58,7 +58,12 @@ const AuthProvider = ({ children }) => {
   const setUpRecaptha = (number) => {
     const recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
-      {},
+      {
+        size: "invisible",
+        callback: function (response) {
+          submitPhoneNumberAuth();
+        },
+      },
       auth
     );
     recaptchaVerifier.render();
