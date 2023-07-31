@@ -65,7 +65,7 @@ const Signup = () => {
       return setError("Please enter a valid phone number!");
     try {
       const response = await setUpRecaptha(number);
-      console.log(response);
+
       setResult(response);
       setFlag(true);
     } catch (err) {
@@ -96,7 +96,6 @@ const Signup = () => {
         role: selectedOption,
       };
 
-      console.log();
       fetch(`${import.meta.env.VITE_API_URL}/users/${number}`, {
         method: "PUT",
         headers: {
