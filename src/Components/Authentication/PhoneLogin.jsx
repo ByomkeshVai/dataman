@@ -13,6 +13,8 @@ import { getAuth } from "firebase/auth";
 
 import { app } from "../../firebase/firebase.config";
 import Signup from "./Signup";
+import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const auth = getAuth(app);
 
@@ -22,6 +24,42 @@ const PhoneLogin = () => {
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [user, setUser] = useState(null);
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [axiosSecure] = useAxiosSecure();
+
+  // const handleVerifyPhoneNumber = () => {
+  //   axiosSecure
+  //     .post("/verifyPhoneNumber", {
+  //       phone_number: "+" + ph,
+  //     })
+  //     .then((response) => {
+  //       setVerificationMessage(response.data.message || response.data.error);
+  //     })
+  //     .catch((error) => {
+  //       setVerificationMessage(error.response.data.error);
+  //     });
+  // };
+
+  const handleVerifyPhoneNumber = () => {
+    axiosSecure
+      .post("/verifyPhoneNumber", {
+        phone_number: "+" + ph,
+      })
+      .then((response) => {
+        const { verified, message, error } = response.data;
+
+        console.log(response.data);
+
+        if (verified) {
+          setVerificationMessage("Phone number is already verified.");
+        } else {
+          onSignup(); // Initiates the OTP verification process
+        }
+      })
+      .catch((error) => {
+        setVerificationMessage(error.response.data.error);
+      });
+  };
 
   function onCaptchVerify() {
     if (!window.recaptchaVerifier) {
@@ -130,7 +168,7 @@ const PhoneLogin = () => {
                 </label>
                 <PhoneInput country={"bd"} value={ph} onChange={setPh} />
                 <button
-                  onClick={onSignup}
+                  onClick={handleVerifyPhoneNumber}
                   className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
                   {loading && (
@@ -138,6 +176,7 @@ const PhoneLogin = () => {
                   )}
                   <span>Send code via SMS</span>
                 </button>
+                {verificationMessage && <p>{verificationMessage}</p>}
               </>
             )}
           </div>
