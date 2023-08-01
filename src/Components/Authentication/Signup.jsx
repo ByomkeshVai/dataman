@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 // import { saveUser } from "../../api/auth";
@@ -22,56 +22,38 @@ const Signup = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const passwords = watch("password");
-  const { loading, setUpRecaptha } = useContext(AuthContext);
-  const [error, setError] = useState("");
-  const [number, setNumber] = useState("");
-  const [flag, setFlag] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [result, setResult] = useState("");
+
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState("Buyer");
-  let [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
-  // const getOtp = async (e) => {
-  //   e.preventDefault();
-  //   console.log(number);
-  //   setError("");
-  //   if (number === "" || number === undefined)
-  //     return setError("Please enter a valid phone number!");
-  //   try {
-  //     const response = await setUpRecaptha(number);
-  //     setResult(response);
-  //     setFlag(true);
-  //   } catch (err) {
-  //     setError(err.message);
-  //   }
-  // };
+  const { user, loading } = useContext(AuthContext);
 
-  const [passwordShown, setPasswordShown] = useState(false);
-  const togglePassword = () => {
-    setPasswordShown(!passwordShown);
-  };
-  const [loginError, setLoginError] = useState("");
+  // // const { user, loading } = useContext(AuthContext);
+  // // console.log(user.phoneNumber);
+
+  const professions = [
+    "Electrician",
+    "Key Maker",
+    "Driver",
+    "Plumber",
+    "Carpenter",
+    "Painter",
+  ];
+
+  const locations = [
+    "Block A",
+    "Block B",
+    "Block C",
+    "Block D",
+    "Block E",
+    "Block H",
+  ];
 
   const onSubmit = async (data) => {
-    if (data.password !== data.confirmPassword) {
-      setLoginError("Passwords do not match");
-    }
-    if (number === "" || number === undefined)
-      return setError("Please enter a valid phone number!");
-    try {
-      const response = await setUpRecaptha(number);
-
-      setResult(response);
-      setFlag(true);
-    } catch (err) {
-      setError(err.message);
-    }
-
     function generateRandomID() {
       const min = 10000; // Minimum 5-digit number (10000)
       const max = 99999; // Maximum 5-digit number (99999)
@@ -90,13 +72,16 @@ const Signup = () => {
       const saveUser = {
         userID: randomID,
         name: data.name,
+        profession: data.profession,
+        location: data.location,
         email: data.email,
-        phone: number,
+        phone1: user.phoneNumber,
+        phone2: data.phone2,
         photo: datas.data.display_url,
         role: selectedOption,
       };
 
-      fetch(`${import.meta.env.VITE_API_URL}/users/${number}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/users/${user.phoneNumber}`, {
         method: "PUT",
         headers: {
           "content-type": "application/json",
@@ -106,23 +91,10 @@ const Signup = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.insertedId) {
-            toast.success("Signup Successful");
-          }
+          toast.success("Signup Successful");
+          navigate("/userPanel");
         });
     });
-  };
-
-  const verifyOtp = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (otp === "" || otp === null) return;
-    try {
-      await result.confirm(otp);
-      navigate("/home");
-    } catch (err) {
-      setError(err.message);
-    }
   };
 
   return (
@@ -158,6 +130,46 @@ const Signup = () => {
                     Seller
                   </label>
                 </div>
+                <div className="form-control">
+                  <label className="label" htmlFor="professionSelect">
+                    Select Profession:
+                  </label>
+                  <select
+                    className="input input-bordered"
+                    id="professionSelect"
+                    {...register("profession", {
+                      required: "Please select a profession",
+                    })}
+                  >
+                    <option value="">-- Select --</option>
+                    {professions.map((profession) => (
+                      <option key={profession} value={profession}>
+                        {profession}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.profession && <p>{errors.profession.message}</p>}
+                </div>
+                <div className="form-control">
+                  <label className="label" htmlFor="locationSelect">
+                    Select Location:
+                  </label>
+                  <select
+                    className="input input-bordered"
+                    id="locationSelect"
+                    {...register("location", {
+                      required: "Please select a location",
+                    })}
+                  >
+                    <option value="">-- Select --</option>
+                    {locations.map((location) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.location && <p>{errors.location.message}</p>}
+                </div>
 
                 <div className="form-control">
                   <label className="label">
@@ -174,18 +186,30 @@ const Signup = () => {
                     <span className="text-red-600">Name is required</span>
                   )}
                 </div>
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text">Phone Number</span>
                   </label>
                   <PhoneInput
                     defaultCountry="BD"
-                    value={number}
-                    onChange={setNumber}
+                    value={user.phoneNumber}
+                    disabled
                     placeholder="Enter number Number"
                     className="p-5 "
                   />
-                  {errors.number && (
+                </div> */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Secondary Phone</span>
+                  </label>
+                  <input
+                    type="phone"
+                    {...register("phone2", { required: false })}
+                    name="phone2"
+                    placeholder="Secondary Number"
+                    className="input input-bordered"
+                  />
+                  {errors.phone2 && (
                     <span className="text-red-600">
                       Phone Number is required
                     </span>
@@ -217,87 +241,15 @@ const Signup = () => {
                     placeholder="Profile Image"
                     className="input"
                   />
-                  {errors.phone && (
-                    <span className="text-red-600">
-                      Phone Number is required
-                    </span>
+                  {errors.image && (
+                    <span className="text-red-600">Image is required</span>
                   )}
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Password</span>
-                  </label>
-                  <input
-                    name="password"
-                    type={passwordShown ? "text" : "password"}
-                    {...register("password", {
-                      required: true,
-                      minLength: 6,
-                      maxLength: 20,
-                      // pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
-                    })}
-                    placeholder="password"
-                    className="input input-bordered"
-                  />
-                  <AiOutlineEye
-                    onClick={togglePassword}
-                    className="absolute right-10 bottom-40 top-80 cursor-pointer"
-                  ></AiOutlineEye>
-                  {errors.password?.type === "required" && (
-                    <p className="text-red-600">Password is required</p>
-                  )}
-                  {errors.password?.type === "minLength" && (
-                    <p className="text-red-600">
-                      Password must be 6 characters
-                    </p>
-                  )}
-                  {errors.password?.type === "maxLength" && (
-                    <p className="text-red-600">
-                      Password must be less than 20 characters
-                    </p>
-                  )}
-                  {errors.password?.type === "pattern" && (
-                    <p className="text-red-600">
-                      Password must have one Uppercase one lower case, one
-                      number and one special character.
-                    </p>
-                  )}
-                </div>
-
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Confirm Password</span>
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    className="input input-bordered"
-                    {...register("confirmPassword", {
-                      validate: (value) =>
-                        value === passwords || "Passwords do not match",
-                    })}
-                  />
-                  {errors.confirmPassword && (
-                    <p className="text-red-600">
-                      {errors.confirmPassword.message}
-                    </p>
-                  )}
-                  {loginError && <p className="text-red-600">{loginError}</p>}
-                  <label className="label">
-                    <a href="#" className="label-text-alt link link-hover">
-                      Forgot password?
-                    </a>
-                  </label>
                 </div>
 
                 <div className="form-control mt-6">
                   <button
-                    disabled={!!errors.confirmPassword}
                     type="submit"
                     className="bg-blue-900 w-full rounded-md py-3 text-white"
-                    onClick={() => setIsEditModalOpen(true)}
                   >
                     {loading ? (
                       <ImSpinner2 className="m-auto animate-spin" size={24} />
@@ -307,43 +259,6 @@ const Signup = () => {
                   </button>
                 </div>
               </form>
-              <div id="recaptcha-container"></div>
-              <VerifyModal
-                verifyOtp={verifyOtp}
-                isOpen={isEditModalOpen}
-                closeModal={() => setIsEditModalOpen(false)}
-                setIsEditModalOpen={setIsEditModalOpen}
-                setOtp={setOtp}
-              />
-              {/* <Form
-                onSubmit={verifyOtp}
-                style={{ display: flag ? "block" : "none" }}
-              >
-                <Form.Group className="mb-3" controlId="formBasicOtp">
-                  <Form.Control
-                    type="otp"
-                    placeholder="Enter OTP"
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-                </Form.Group>
-                <div className="button-right">
-                  <Link to="/">
-                    <Button variant="secondary">Cancel</Button>
-                  </Link>
-                  &nbsp;
-                  <Button type="submit" variant="primary">
-                    Verify
-                  </Button>
-                </div>
-              </Form> */}
-              <p className="mb-6 text-center">
-                <small>
-                  Already have an account{" "}
-                  <Link to="/login" className="text-blue-900 font-bold">
-                    Login
-                  </Link>
-                </small>
-              </p>
             </div>
           </div>
         </div>
