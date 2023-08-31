@@ -29,6 +29,8 @@ const UpdateUserForm = ({
     "Block E",
     "Block H",
   ];
+
+  console.log(itemDatas);
   return (
     <div className="">
       <form onSubmit={handleSubmit}>
@@ -79,7 +81,6 @@ const UpdateUserForm = ({
               type="text"
               placeholder="Phone 2"
               defaultValue={itemDatas?.phone2}
-              required
             />
           </div>
 
@@ -96,9 +97,12 @@ const UpdateUserForm = ({
               }
               defaultValue={itemDatas?.profession}
             >
+              <option value={""}>Select</option>
               {professions.map((profession) => (
                 <option
-                  defaultValue={itemDatas?.profession}
+                  defaultValue={
+                    itemDatas?.profession ? itemDatas?.profession : " "
+                  }
                   key={profession}
                   value={profession}
                 >

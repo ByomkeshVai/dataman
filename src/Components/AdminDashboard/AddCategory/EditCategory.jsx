@@ -1,20 +1,20 @@
 import React from "react";
-import UpdateUserForm from "./UpdateUserForm";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
+import UpdateCategoryForm from "./UpdateCategoryForm";
+import { editCategory } from "../../../hooks/category";
 import { imageUpload } from "./../../../hooks/utlits";
-import { editusers } from "../../../hooks/users";
 
-const EditModal = ({
+const EditCategory = ({
   setIsEditModalOpen,
   isEditModalOpen,
   refetch,
-  users,
+  category,
   id,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [itemDatas, setItemDatas] = useState(users);
+  const [itemDatas, setItemDatas] = useState(category);
   const handleImageUpdate = (image) => {
     setLoading(true);
     imageUpload(image)
@@ -33,10 +33,9 @@ const EditModal = ({
     const updatedData = Object.assign({}, { ...itemDatas });
     delete updatedData._id;
     setLoading(true);
-    editusers(updatedData, id)
+    editCategory(updatedData, id)
       .then((data) => {
-        console.log(data);
-        toast.success("Item info updated");
+        toast.success("Category Data updated");
         setLoading(false);
         refetch();
         setIsEditModalOpen(false);
@@ -46,7 +45,6 @@ const EditModal = ({
         setLoading(false);
       });
   };
-
   return (
     <Transition appear show={isEditModalOpen} as={Fragment}>
       <Dialog
@@ -79,7 +77,7 @@ const EditModal = ({
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <div className="mt-2 w-full">
-                  <UpdateUserForm
+                  <UpdateCategoryForm
                     handleSubmit={handleSubmit}
                     itemDatas={itemDatas}
                     setItemDatas={setItemDatas}
@@ -106,4 +104,4 @@ const EditModal = ({
   );
 };
 
-export default EditModal;
+export default EditCategory;

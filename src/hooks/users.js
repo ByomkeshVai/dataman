@@ -1,6 +1,6 @@
 export const editusers = async (itemData, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/edit/users/${id}`,
+    `${import.meta.env.VITE_API_URL}/edit/user/${id}`,
     {
       method: "PUT",
       headers: {

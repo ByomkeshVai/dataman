@@ -1,32 +1,26 @@
 import React from "react";
-import { useContext } from "react";
-import { AuthContext } from "../../../providers/AuthProvider";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { Helmet } from "react-helmet";
-import EmptyState from "./../../Shared/EmptyState";
-import UserDataRow from "./UserDataRow";
+import PackageData from "./PackageData";
 
-const AllUser = () => {
-  const { loading } = useContext(AuthContext);
+const AllPackage = () => {
   const [axiosSecure] = useAxiosSecure();
-  const { refetch, data: users = [] } = useQuery({
-    queryKey: ["users"],
+  const { user, loading } = useContext(AuthContext);
+  const { refetch, data: items = [] } = useQuery({
+    queryKey: ["items"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosSecure(`/user`);
+      const res = await axiosSecure(
+        `${import.meta.env.VITE_API_URL}/all/package`
+      );
+
       return res.data;
     },
   });
-
-  console.log(users);
-
   return (
     <>
       <Helmet>
-        <title>Data Man - Manage User</title>
+        <title>Dataman - All Packages</title>
       </Helmet>
-      {users && Array.isArray(users) && users.length > 0 ? (
+      {items && Array.isArray(items) && items.length > 0 ? (
         <div className="container mx-auto px-4 sm:px-8">
           <div className="py-8">
             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -38,44 +32,27 @@ const AllUser = () => {
                         scope="col"
                         className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                       >
-                        Name
+                        Category
                       </th>
                       <th
                         scope="col"
                         className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                       >
-                        Phone (Verified)
+                        Package Name
                       </th>
                       <th
                         scope="col"
                         className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                       >
-                        Phone 2
+                        Price (BDT)
                       </th>
                       <th
                         scope="col"
                         className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                       >
-                        Role
+                        Duration
                       </th>
-                      <th
-                        scope="col"
-                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                      >
-                        User ID
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                      >
-                        Profession
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                      >
-                        Location
-                      </th>
+
                       <th
                         scope="col"
                         className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
@@ -85,11 +62,11 @@ const AllUser = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users &&
-                      users.map((users) => (
-                        <UserDataRow
-                          key={users?._id}
-                          users={users}
+                    {items &&
+                      items.map((items) => (
+                        <PackageData
+                          key={items?._id}
+                          items={items}
                           refetch={refetch}
                         />
                       ))}
@@ -101,11 +78,11 @@ const AllUser = () => {
         </div>
       ) : (
         <div className="max-w-screen-xl mx-auto hero mt-14">
-          <EmptyState message="No User data available." />
+          <EmptyState message="No Promo available." />
         </div>
       )}
     </>
   );
 };
 
-export default AllUser;
+export default AllPackage;

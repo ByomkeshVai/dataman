@@ -36,13 +36,14 @@ const UserDataRow = ({ users, refetch }) => {
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
           <p className="text-gray-900 whitespace-no-wrap">{users?.phone2}</p>
         </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+          <p className="text-gray-900 whitespace-no-wrap">{users?.role}</p>
+        </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-md">
           <p className="text-gray-900 whitespace-no-wrap">{users?.userID}</p>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-md">
-          <p className="text-gray-900 whitespace-no-wrap">
-            {users?.profession}
-          </p>
+          <p className="text-gray-900 whitespace-no-wrap">{users?.category}</p>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-md">
           <p className="text-gray-900 whitespace-no-wrap">{users?.location}</p>

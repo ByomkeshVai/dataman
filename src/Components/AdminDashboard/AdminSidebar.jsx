@@ -20,14 +20,16 @@ const AdminSidebar = () => {
     logOut();
     navigate("/");
   };
+  const handleLogOut2 = () => {
+    logOut();
+    navigate("/");
+  };
   return (
     <>
       <div className="bg-gray-200 text-gray-800 flex justify-between md:hidden">
         <div>
-          <div className="block cursor-pointer p-4 font-bold">
-            {/* <Logo /> */}
-            <h2>DataMan</h2>
-          </div>
+          {/* <Logo /> */}
+          <h2>DataMan Admin</h2>
         </div>
 
         <button
@@ -48,9 +50,30 @@ const AdminSidebar = () => {
           <div>
             <div className="w-full hidden md:flex py-2 justify-center items-center bg-[#ccc] mx-auto">
               {/* <Logo /> */}
+              <h2>DataMan Admin</h2>
             </div>
             <div>
               <hr />
+              <NavLink
+                to="/admin/dashboard/add-category"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <span className="mx-4 font-medium">Add Category</span>
+              </NavLink>
+              <NavLink
+                to="/admin/dashboard/all-category"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <span className="mx-4 font-medium">All Category</span>
+              </NavLink>
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -59,7 +82,9 @@ const AdminSidebar = () => {
                   }`
                 }
               >
-                <span className="mx-4 font-medium">Add User</span>
+                <span className="mx-4 font-medium" onClick={handleLogOut2}>
+                  Add User
+                </span>
               </NavLink>
               <NavLink
                 to="/admin/dashboard/all-user"
@@ -70,6 +95,16 @@ const AdminSidebar = () => {
                 }
               >
                 <span className="mx-4 font-medium">All User</span>
+              </NavLink>
+              <NavLink
+                to="/admin/dashboard/add-package"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <span className="mx-4 font-medium">Add Package</span>
               </NavLink>
             </div>
           </div>

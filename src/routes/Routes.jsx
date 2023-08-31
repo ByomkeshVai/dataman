@@ -8,6 +8,10 @@ import AllUser from "../Components/AdminDashboard/UserHere/AllUser";
 import AdminLogin from "../Components/AdminDashboard/AdminLogin";
 import AdminRoute from "./AdminRoute";
 import ErrorPage from "../Components/Shared/ErrorPage";
+import AddPackage from "../Components/AdminDashboard/AddPackage/AddPackage";
+import AddCategory from "../Components/AdminDashboard/AddCategory/AddCategory";
+import AllCategory from "../Components/AdminDashboard/AddCategory/AllCategory";
+import AllPackage from "../Components/AdminDashboard/AddPackage/AllPackage";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +51,38 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllUser />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard/add-package",
+        element: (
+          <AdminRoute>
+            <AddPackage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard/add-package",
+        element: (
+          <AdminRoute>
+            <AllPackage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard/add-category",
+        element: (
+          <AdminRoute>
+            <AddCategory />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard/all-category",
+        element: (
+          <AdminRoute>
+            <AllCategory />
           </AdminRoute>
         ),
       },

@@ -24,10 +24,11 @@ const Signup = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState("Buyer");
+  const [selectedOption, setSelectedOption] = useState("buyer");
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
   };
 
   const { user, loading } = useContext(AuthContext);
@@ -112,8 +113,8 @@ const Signup = () => {
                   <label>
                     <input
                       type="radio"
-                      value="Buyer"
-                      checked={selectedOption === "Buyer"}
+                      value="buyer"
+                      checked={selectedOption === "buyer"}
                       onChange={handleOptionChange}
                       className="mr-3"
                     />
@@ -122,34 +123,40 @@ const Signup = () => {
                   <label>
                     <input
                       type="radio"
-                      value="Seller"
-                      checked={selectedOption === "Seller"}
+                      value="seller"
+                      checked={selectedOption === "seller"}
                       onChange={handleOptionChange}
                       className="mr-3"
                     />
                     Seller
                   </label>
                 </div>
-                <div className="form-control">
-                  <label className="label" htmlFor="professionSelect">
-                    Select Profession:
-                  </label>
-                  <select
-                    className="input input-bordered"
-                    id="professionSelect"
-                    {...register("profession", {
-                      required: "Please select a profession",
-                    })}
-                  >
-                    <option value="">-- Select --</option>
-                    {professions.map((profession) => (
-                      <option key={profession} value={profession}>
-                        {profession}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.profession && <p>{errors.profession.message}</p>}
-                </div>
+                {selectedOption === "seller" && (
+                  <div className="form-control">
+                    <label className="label" htmlFor="professionSelect">
+                      Select Profession:
+                    </label>
+                    <select
+                      className="input input-bordered"
+                      id="professionSelect"
+                      {...register("profession", {
+                        required: "Please select a profession",
+                      })}
+                    >
+                      <option value="">-- Select --</option>
+                      {professions.map((profession) => (
+                        <option
+                          key={profession}
+                          value={profession}
+                          defaultValue={"N/A"}
+                        >
+                          {profession}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.profession && <p>{errors.profession.message}</p>}
+                  </div>
+                )}
                 <div className="form-control">
                   <label className="label" htmlFor="locationSelect">
                     Select Location:
