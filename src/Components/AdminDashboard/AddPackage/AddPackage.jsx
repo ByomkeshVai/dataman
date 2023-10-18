@@ -16,7 +16,9 @@ const AddPackage = () => {
     queryKey: ["items"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosSecure(`${import.meta.env.VITE_API_URL}/category`);
+      const res = await axiosSecure(
+        `${import.meta.env.VITE_API_URL}/all/category`
+      );
 
       return res.data;
     },
@@ -27,7 +29,7 @@ const AddPackage = () => {
     setLoading(true);
     const name = event.target.name.value;
     const category = event.target.category.value;
-    const price = event.target.discount.value;
+    const price = event.target.price.value;
     const duration = event.target.duration.value;
     const itemData = {
       name,
@@ -40,7 +42,7 @@ const AddPackage = () => {
       .then((data) => {
         setLoading(false);
         toast.success("Package Has Added");
-        // navigate("/admin/dashboard/allpromo");
+        navigate("/admin/dashboard/all-package");
       })
       .catch((error) => {
         console.log(error);
@@ -62,8 +64,8 @@ const AddPackage = () => {
                 name="category"
               >
                 {items.map((items) => (
-                  <option value={items.name} key={items.name}>
-                    {items.name}
+                  <option value={items.category} key={items._id}>
+                    {items.category}
                   </option>
                 ))}
               </select>
@@ -97,6 +99,7 @@ const AddPackage = () => {
                     type="number"
                     placeholder="Price"
                   />
+                  <span>৳</span>
                 </div>
               </div>
 

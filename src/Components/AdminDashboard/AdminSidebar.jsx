@@ -106,6 +106,36 @@ const AdminSidebar = () => {
               >
                 <span className="mx-4 font-medium">Add Package</span>
               </NavLink>
+              <NavLink
+                to="/admin/dashboard/all-package"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <span className="mx-4 font-medium">All Package</span>
+              </NavLink>
+              <NavLink
+                to="/admin/dashboard/custom-package"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <span className="mx-4 font-medium">Custom Package</span>
+              </NavLink>
+              <NavLink
+                to="/admin/dashboard/allcustom-package"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 mt-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <span className="mx-4 font-medium">All Custom Package</span>
+              </NavLink>
             </div>
           </div>
         </div>

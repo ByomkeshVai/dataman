@@ -12,6 +12,8 @@ import AddPackage from "../Components/AdminDashboard/AddPackage/AddPackage";
 import AddCategory from "../Components/AdminDashboard/AddCategory/AddCategory";
 import AllCategory from "../Components/AdminDashboard/AddCategory/AllCategory";
 import AllPackage from "../Components/AdminDashboard/AddPackage/AllPackage";
+import AddCustomPackage from "../Components/AdminDashboard/CustomPackage/AddCustomPackage";
+import AllCustomPackage from "../Components/AdminDashboard/CustomPackage/AllCustomPackage";
 
 export const router = createBrowserRouter([
   {
@@ -63,10 +65,26 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/admin/dashboard/add-package",
+        path: "/admin/dashboard/all-package",
         element: (
           <AdminRoute>
             <AllPackage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard/custom-package",
+        element: (
+          <AdminRoute>
+            <AddCustomPackage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin/dashboard/allcustom-package",
+        element: (
+          <AdminRoute>
+            <AllCustomPackage />
           </AdminRoute>
         ),
       },

@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "set PORT=5000 && react-scripts start",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -26,7 +27,7 @@
     "react-fast-marquee": "^1.6.0",
     "react-form-stepper": "^2.0.3",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "^7.45.1",
+    "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
     "react-phone-input-2": "^2.15.1",
